@@ -1,0 +1,54 @@
+{
+  "LOGOUT": {
+    "TITLE": "Sign Out"
+  },
+  "LOGIN": {
+    "TITLE": "Sign In",
+    "HEADER": "Welcome",
+    "SUB_HEADER": "Sign in to Continue!",
+    "POLICE_BUTTON_TITLE": "Sign in as a Police Officer",
+    "DRIVER_BUTTON_TITLE": "Sign in as a Driver"
+  },
+  "POLICE_OFFICER_LOGIN": {
+    "TITLE": "Police Officer",
+    "HEADER": "Welcome",
+    "SUB_HEADER": "Sign in to Continue!",
+    "USER_NAME": {
+      "LABEL": "User Name",
+      "PLACEHOLDER": "User Name",
+      "ERRORS": {
+        "REQUIRED": "User name is required"
+      }
+    },
+    "PASSWORD": {
+      "LABEL": "Password",
+      "PLACEHOLDER": "Password",
+      "ERRORS": {
+        "REQUIRED": "Password is required",
+        "SHORT": "Password is too short"
+      }
+    },
+    "SUBMIT": "Submit"
+  },
+  "POLICE_OFFICER_HOME": {
+    "TITLE": "Police Officer",
+    "HEADER": "Welcome",
+    "SUB_HEADER": "Sign in to Continue!",
+    "USER_NAME": {
+      "LABEL": "User Name",
+      "PLACEHOLDER": "User Name",
+      "ERRORS": {
+        "REQUIRED": "User name is required"
+      }
+    },
+    "PASSWORD": {
+      "LABEL": "Password",
+      "PLACEHOLDER": "Password",
+      "ERRORS": {
+        "REQUIRED": "Password is required",
+        "SHORT": "Password is too short"
+      }
+    },
+    "SUBMIT": "Submit"
+  }
+}
