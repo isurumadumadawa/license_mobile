@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { StyleSheet } from "react-native";
+import { Text, View, Button } from "native-base";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { Camera } from "expo-camera";
+import { useSelector, useDispatch } from "react-redux";
+
+import i18n from "../../localization";
+import { scanDriver, selectDriver } from "../../store/reducers/driverSlice";
+import DriverView from "../DriverView";
 
 const QRScan = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+
+  const driver = useSelector(selectDriver);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("driver.......", driver?.driver?.name);
+  }, [driver]);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -16,13 +28,10 @@ const QRScan = () => {
     getBarCodeScannerPermissions();
   }, []);
 
-  useEffect(() => {
-    console.log("permisions....", hasPermission);
-  }, [hasPermission]);
-
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    dispatch(scanDriver(JSON.parse(data)));
+    //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
   if (hasPermission === null) {
@@ -42,14 +51,27 @@ const QRScan = () => {
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={[StyleSheet.absoluteFillObject, styles.container]}
-        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-      />
+      {!scanned && (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={[StyleSheet.absoluteFillObject, styles.container]}
+          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+        />
+      )}
 
       {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+        <>
+          <Button
+            size="lg"
+            variant="outline"
+            title={"Tap to Scan Again"}
+            onPress={() => setScanned(false)}
+            colorScheme="cyan"
+          >
+            {i18n.t("SCANNER.SCAN_BUTON")}
+          </Button>
+          <DriverView driver={driver?.driver} />
+        </>
       )}
     </View>
   );

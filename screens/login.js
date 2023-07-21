@@ -9,6 +9,7 @@ import {
   Box,
   Heading,
 } from "native-base";
+import QRScan from "../componenst/QRScan";
 
 import LoginComp from "../componenst/Login";
 
@@ -16,6 +17,7 @@ const Login = () => {
   return (
     <View>
       <LoginComp />
+      {/* <QRScan /> */}
     </View>
   );
 };

@@ -50,5 +50,21 @@
       }
     },
     "SUBMIT": "Submit"
+  },
+  "SCANNER": {
+    "SCAN_BUTON": "Tap to scan another driver"
+  },
+  "DRIVER_VIEW": {
+    "IMAGE": "Profile Image",
+    "OTHER_NAME": "Other Name",
+    "GENDER": "Gender",
+    "MOBILE_NUMBER": "Mobile Number",
+    "BIRTH_DAY": "Birth Day",
+    "BLOOD_TYPE": "Blood Type",
+    "ADDRESS": "Address",
+    "ISSUED_DATE": "Issued Date",
+    "EXPIRE_DATE": "Expire Date",
+    "VIEW_PANELTIES": "View Panelties",
+    "ADD_PANELTY": "Add Panelty"
   }
 }
