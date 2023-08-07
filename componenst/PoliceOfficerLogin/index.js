@@ -47,15 +47,6 @@ function PoliceOfficerLogin() {
     return true;
   };
 
-  useEffect(() => {
-    const getLogin = async () => {
-      console.log("auth....", auth);
-      const response = await SecureStore.getItemAsync("auth");
-      console.log("local...", response);
-    };
-    getLogin();
-  }, [auth.status]);
-
   const onSubmit = () => {
     setErrors({});
 

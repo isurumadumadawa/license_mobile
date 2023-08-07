@@ -14,10 +14,13 @@ import {
 } from "native-base";
 import React from "react";
 import Moment from "moment";
+import { useNavigation } from "@react-navigation/native";
 
 import i18n from "../../localization";
 
 const DriverView = ({ driver }) => {
+  console.log("driver data......", driver);
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <Center p="3">
@@ -125,7 +128,13 @@ const DriverView = ({ driver }) => {
               w="100%"
             >
               <Button w="48%">{i18n.t("DRIVER_VIEW.VIEW_PANELTIES")}</Button>
-              <Button w="48%" variant="outline">
+              <Button
+                w="48%"
+                variant="outline"
+                onPress={() => {
+                  navigation.navigate("addPenalty");
+                }}
+              >
                 {i18n.t("DRIVER_VIEW.ADD_PANELTY")}
               </Button>
             </Button.Group>

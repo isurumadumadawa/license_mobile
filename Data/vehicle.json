@@ -1,0 +1,30 @@
+[
+  { "label": "A1", "value": 1 },
+  { "label": "A", "value": 2 },
+  { "label": "B1", "value": 3 },
+  {
+    "label": "B",
+    "value": 4
+  },
+  {
+    "label": "C1",
+    "value": 5
+  },
+  { "label": "C", "value": 6 },
+  { "label": "CE", "value": 7 },
+  {
+    "label": "D1",
+    "value": 8
+  },
+  {
+    "label": "D",
+    "value": 9
+  },
+  { "label": "DE", "value": 10 },
+  {
+    "label": "G1",
+    "value": 11
+  },
+  { "label": "G", "value": 12 },
+  { "label": "J", "value": 13 }
+]

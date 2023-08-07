@@ -66,5 +66,64 @@
     "EXPIRE_DATE": "Expire Date",
     "VIEW_PANELTIES": "View Panelties",
     "ADD_PANELTY": "Add Panelty"
-  }
+  },
+  "ADD_PENALTY": {
+    "TITLE": "Add Penalty",
+    "VEHICLE": {
+      "LABEL": "Select Vehicle",
+      "PLACEHOLDER": "Select Vehicle",
+      "ERRORS": {
+        "REQUIRED": "Vehicle is required"
+      }
+    },
+    "POLICE_STATION": {
+      "LABEL": "Select Police Area",
+      "PLACEHOLDER": "Select Police Area",
+      "ERRORS": {
+        "REQUIRED": "Police Area is required"
+      }
+    },
+    "VEHICLE_NUMBER": {
+      "LABEL": "Vehicle Number",
+      "PLACEHOLDER": "Vehicle Number",
+      "ERRORS": {
+        "REQUIRED": "Vehicle Number is required"
+      }
+    },
+    "COURT": {
+      "LABEL": "Is Court"
+    },
+    "COURT_DATE": {
+      "LABEL": "Court Date",
+      "PLACEHOLDER": "Select Date",
+      "ERRORS": {
+        "REQUIRED": "Court Date is required"
+      }
+    },
+    "EXPIRE_DATE": {
+      "LABEL": "Last Date",
+      "PLACEHOLDER": "Select Date",
+      "ERRORS": {
+        "REQUIRED": "Last Date is required"
+      }
+    },
+    "RULES": {
+      "LABEL": "Violated Rules",
+      "PLACEHOLDER": "Select Violated Rules",
+      "ERRORS": {
+        "REQUIRED": "Violated Rules are required"
+      }
+    },
+    "CREATE": {
+      "SUCCESS": "Added Penalty Record Successfully!",
+      "ERROR": {
+        "HEADER": "Can't Add Penalty Due to the  Poor Network Connection!",
+        "BODY": "Try one more. If still getting same message add record to the pending list. Once network connection is back you can add the records.",
+        "RETRY": "Try Again",
+        "ADD_TO_PENDING": "Add to Pending List"
+      }
+    },
+    "SUBMIT": "Add Penalty"
+  },
+  "CONNECTION": "Poor Network Connection !"
 }

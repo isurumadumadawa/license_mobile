@@ -11,6 +11,7 @@ const initialState = {
     userName: "",
     roleId: "",
     role: "",
+    id: "",
   },
 };
 
@@ -40,6 +41,7 @@ export const authSlice = createSlice({
         userName: "",
         roleId: "",
         role: "",
+        id: "",
       };
     },
   },
@@ -66,6 +68,7 @@ export const authSlice = createSlice({
           userName: "",
           roleId: "",
           role: "",
+          id: "",
         };
         SecureStore.setItemAsync("auth", JSON.stringify({}));
       })
