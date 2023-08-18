@@ -37,6 +37,8 @@ import {
   getRulesFromStorage,
 } from "../../store/reducers/ruleSlice";
 import { selectDriver } from "../../store/reducers/driverSlice";
+import { selectConnection } from "../../store/reducers/connectionSlice";
+import { AddPendingPenalty } from "../../store/reducers/penaltySlice";
 
 import { addPenalty } from "../../services/penaltyAPI";
 
@@ -46,6 +48,7 @@ const initialValues = {
   vehicleNumber: "",
   isCourt: false,
   expireDate: new Date(),
+  issuedDate: new Date(),
   rules: [],
 };
 
@@ -64,6 +67,7 @@ const AddPenalty = () => {
   const policeAreas = useSelector(selectPoliceAreas);
   const auth = useSelector(selectAuth);
   const driver = useSelector(selectDriver);
+  const connection = useSelector(selectConnection);
   const dispatch = useDispatch();
 
   const toast = useToast();
@@ -142,31 +146,35 @@ const AddPenalty = () => {
   const onSubmit = async () => {
     setErrors({});
     if (validate()) {
-      setLoading(true);
       const panelty = {
         driverId: driver?.driver?.id,
         vehicleId: formData?.vehicleId,
         policeStationId: formData?.policeStationId,
         policeOfficerId: auth?.user?.id,
         vehicleNumber: formData?.vehicleNumber,
-        issuedDate: new Date(),
+        issuedDate: formData?.issuedDate,
         expireDate: formData?.expireDate,
         isCourt: formData?.isCourt,
         rules: formData?.rules,
       };
       try {
-        const response = await addPenalty({
-          token: auth?.user?.token,
-          data: panelty,
-        });
-        setLoading(false);
-        setSelectedRules([]);
-        setData(initialValues);
-        toast.show({
-          description: i18n.t("ADD_PENALTY.CREATE.SUCCESS"),
-        });
+        if (connection) {
+          setLoading(true);
+          const response = await addPenalty({
+            token: auth?.user?.token,
+            data: panelty,
+          });
+          setLoading(false);
+          setSelectedRules([]);
+          setData(initialValues);
+          toast.show({
+            description: i18n.t("ADD_PENALTY.CREATE.SUCCESS"),
+          });
+        } else {
+          setLoading(false);
+          setIsOpen(!isOpen);
+        }
       } catch (error) {
-        console.log("error.......", error);
         setLoading(false);
         setIsOpen(!isOpen);
       }
@@ -179,6 +187,23 @@ const AddPenalty = () => {
     if (Platform.OS === "android") {
       setDateExpirePicker(false);
     }
+  };
+
+  const onSaveToPrnding = () => {
+    dispatch(
+      AddPendingPenalty({
+        driverId: driver?.driver?.id,
+        vehicleId: formData?.vehicleId,
+        policeStationId: formData?.policeStationId,
+        policeOfficerId: auth?.user?.id,
+        vehicleNumber: formData?.vehicleNumber,
+        issuedDate: Moment(formData?.issuedDate).format("DD MMM YYYY"),
+        expireDate: Moment(formData?.expireDate).format("DD MMM YYYY"),
+        isCourt: formData?.isCourt,
+        rules: formData?.rules,
+      })
+    );
+    onClose();
   };
 
   const FaildDialog = () => {
@@ -201,12 +226,12 @@ const AddPenalty = () => {
               <Button
                 variant="unstyled"
                 colorScheme="coolGray"
-                onPress={onClose}
+                onPress={onSubmit}
                 ref={cancelRef}
               >
                 {i18n.t("ADD_PENALTY.CREATE.ERROR.RETRY")}
               </Button>
-              <Button colorScheme="danger" onPress={onClose}>
+              <Button colorScheme="danger" onPress={onSaveToPrnding}>
                 {i18n.t("ADD_PENALTY.CREATE.ERROR.ADD_TO_PENDING")}
               </Button>
             </Button.Group>

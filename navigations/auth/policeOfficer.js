@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 
 import PoliceOfficerHome from "../../screens/policeOfficerHome";
 import AddPenalty from "../../screens/addPenalty";
+import pendingPenalty from "../../screens/pendingPenalty";
+import ViewPenalty from "../../screens/viewPenalty";
 import { logout } from "../../store/reducers/loginSlice";
 
 import i18n from "../../localization";
@@ -39,6 +41,46 @@ function PoliceOfficer() {
         component={AddPenalty}
         options={{
           title: i18n.t("ADD_PENALTY.TITLE"),
+          headerStyle: {
+            backgroundColor: "#0891b2",
+          },
+          headerTintColor: "#fff",
+          headerRight: () => (
+            <Button
+              onPress={() => dispatch(logout())}
+              title="Info"
+              color="#fff"
+            >
+              {i18n.t("LOGOUT.TITLE")}
+            </Button>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="pendingPenalty"
+        component={pendingPenalty}
+        options={{
+          title: i18n.t("PENDING_PENALTY.TITLE"),
+          headerStyle: {
+            backgroundColor: "#0891b2",
+          },
+          headerTintColor: "#fff",
+          headerRight: () => (
+            <Button
+              onPress={() => dispatch(logout())}
+              title="Info"
+              color="#fff"
+            >
+              {i18n.t("LOGOUT.TITLE")}
+            </Button>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="viewPenalty"
+        component={ViewPenalty}
+        options={{
+          title: i18n.t("VIEW_PENALTY.TITLE"),
           headerStyle: {
             backgroundColor: "#0891b2",
           },

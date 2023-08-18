@@ -5,6 +5,7 @@ import driverReducer from "./reducers/driverSlice";
 import policeAreaReducer from "./reducers/policeStationSlice";
 import rulesReducer from "./reducers/ruleSlice";
 import connectionReducer from "./reducers/connectionSlice";
+import penaltyReducer from "./reducers/penaltySlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     policeArea: policeAreaReducer,
     rules: rulesReducer,
     connection: connectionReducer,
+    penalty: penaltyReducer,
   },
 });
 

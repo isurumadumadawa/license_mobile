@@ -8,6 +8,7 @@ import {
   selectConnection,
   setConnection,
 } from "./store/reducers/connectionSlice";
+import { getPendingPenaltyFromStorage } from "./store/reducers/penaltySlice";
 
 import UnAuthPoliceOfficer from "./navigations/unauth/policeOfficer";
 import AuthPoliceOfficer from "./navigations/auth/policeOfficer";
@@ -46,6 +47,10 @@ function layout() {
       }
     };
     getUser();
+  }, []);
+
+  useEffect(() => {
+    dispatch(getPendingPenaltyFromStorage());
   }, []);
 
   useEffect(() => {

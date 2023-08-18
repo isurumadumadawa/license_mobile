@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
-import { Text, View, Button } from "native-base";
+import { Text, View, Button, Flex } from "native-base";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 import i18n from "../../localization";
 import { scanDriver, selectDriver } from "../../store/reducers/driverSlice";
@@ -14,6 +15,7 @@ const QRScan = () => {
 
   const driver = useSelector(selectDriver);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   useEffect(() => {
     console.log("driver.......", driver?.driver?.name);
@@ -52,24 +54,54 @@ const QRScan = () => {
   return (
     <View style={styles.container}>
       {!scanned && (
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={[StyleSheet.absoluteFillObject, styles.container]}
-          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-        />
+        <>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={[StyleSheet.absoluteFillObject, styles.container]}
+            barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
+          />
+          <View style={styles.ButtonContaiber}>
+            <View style={styles.Button}>
+              <Button
+                h="75"
+                size="lg"
+                variant="ghost"
+                title={"Tap to Scan Again"}
+                onPress={() => navigation.navigate("pendingPenalty")}
+                colorScheme="cyan"
+              >
+                {i18n.t("SCANNER.PENDING_BUTTON")}
+              </Button>
+            </View>
+          </View>
+        </>
       )}
 
       {scanned && (
         <>
-          <Button
-            size="lg"
-            variant="outline"
-            title={"Tap to Scan Again"}
-            onPress={() => setScanned(false)}
-            colorScheme="cyan"
-          >
-            {i18n.t("SCANNER.SCAN_BUTON")}
-          </Button>
+          <Flex w="100%" alignItems="flex-end" justyfyContent="flex-end">
+            <Button.Group
+              colorScheme="blue"
+              mx={{
+                base: "auto",
+                md: 0,
+              }}
+              size="lg"
+              mt="5"
+              mb="5"
+              w="90%"
+            >
+              <Button
+                w="48%"
+                onPress={() => navigation.navigate("pendingPenalty")}
+              >
+                {i18n.t("SCANNER.PENDING_BUTTON")}
+              </Button>
+              <Button w="48%" onPress={() => setScanned(false)}>
+                {i18n.t("SCANNER.SCAN_BUTON")}
+              </Button>
+            </Button.Group>
+          </Flex>
           <DriverView driver={driver?.driver} />
         </>
       )}
@@ -81,6 +113,20 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
+  },
+  ButtonContaiber: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: 70,
+    backgroundColor: "white",
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+  },
+  Button: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
   },
 });
 

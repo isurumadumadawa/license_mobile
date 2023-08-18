@@ -12,3 +12,13 @@ export const addPenalty = ({ token, data }) => {
     data: data,
   });
 };
+
+export const getPenalty = ({ token, driverId }) => {
+  return axios({
+    method: "GET",
+    url: `${envVariables.REACT_APP_API_BASE_URL}/panelty/${driverId}`,
+    headers: {
+      "x-auth-token": token,
+    },
+  });
+};

@@ -52,7 +52,8 @@
     "SUBMIT": "Submit"
   },
   "SCANNER": {
-    "SCAN_BUTON": "Tap to scan another driver"
+    "SCAN_BUTON": "Tap to scan another driver",
+    "PENDING_BUTTON": "View Pending Records"
   },
   "DRIVER_VIEW": {
     "IMAGE": "Profile Image",
@@ -125,5 +126,32 @@
     },
     "SUBMIT": "Add Penalty"
   },
-  "CONNECTION": "Poor Network Connection !"
+  "CONNECTION": "Poor Network Connection !",
+  "PENDING_PENALTY": {
+    "TITLE": "Pending Penalty",
+    "VEHICLE_NUMBER": "Vehicle Number",
+    "VEHICLE_TYPE": "Vehicle Type",
+    "POLICE_AREA": "Police Area",
+    "ISSUED_DATE": "Issued Date",
+    "EXPIRE_DATE": "Expire Date",
+    "IS_COURT": "Is Court",
+    "UPLOAD_BUTTON": "Upload",
+    "UPLOAD_SUCCESS": "Added Penalty Record Successfully!",
+    "UPLOAD_ERROR": "Something Wrong! Try Again.",
+    "NO_DATA": "No Pending Penalties!"
+  },
+  "VIEW_PENALTY": {
+    "TITLE": "View Penalty",
+    "DRIVER_NAME": "Driver's Name",
+    "VEHICLE_NUMBER": "Vehicle Number",
+    "VEHICLE_TYPE": "Vehicle Type",
+    "POLICE_AREA": "Police Area",
+    "ISSUED_DATE": "Issued Date",
+    "EXPIRE_DATE": "Expire Date",
+    "IS_COURT": "Is Court",
+    "UPLOAD_BUTTON": "Upload",
+    "UPLOAD_SUCCESS": "Added Penalty Record Successfully!",
+    "UPLOAD_ERROR": "Something Wrong! Try Again.",
+    "NO_DATA": "No Pending Penalties!"
+  }
 }

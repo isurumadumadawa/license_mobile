@@ -127,7 +127,12 @@ const DriverView = ({ driver }) => {
               mt="5"
               w="100%"
             >
-              <Button w="48%">{i18n.t("DRIVER_VIEW.VIEW_PANELTIES")}</Button>
+              <Button
+                w="48%"
+                onPress={() => navigation.navigate("viewPenalty")}
+              >
+                {i18n.t("DRIVER_VIEW.VIEW_PANELTIES")}
+              </Button>
               <Button
                 w="48%"
                 variant="outline"
