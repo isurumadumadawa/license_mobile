@@ -30,6 +30,28 @@
     },
     "SUBMIT": "Submit"
   },
+  "DRIVER_LOGIN": {
+    "TITLE": "Driver",
+    "HEADER": "Welcome",
+    "SUB_HEADER": "Sign in to Continue!",
+    "MOBILE_NUMBER": {
+      "LABEL": "Mobile Number",
+      "PLACEHOLDER": "Mobile Number",
+      "ERRORS": {
+        "REQUIRED": "Valid mobile number is required"
+      },
+      "SUBMIT": "Get Verification Code"
+    },
+    "OTP": {
+      "LABEL": "Verification Code",
+      "PLACEHOLDER": "Verification Code",
+      "ERRORS": {
+        "REQUIRED": "Invalid Verification Code"
+      },
+      "SUBMIT": "Submit"
+    },
+    "SUBMIT": "Submit"
+  },
   "POLICE_OFFICER_HOME": {
     "TITLE": "Police Officer",
     "HEADER": "Welcome",
@@ -124,6 +146,13 @@
         "ADD_TO_PENDING": "Add to Pending List"
       }
     },
+    "RECOMMENDATION": {
+      "SUCCESS": {
+        "HEADER": "Recommended Penelty",
+        "SUBMIT": "Submit"
+      }
+    },
+
     "SUBMIT": "Add Penalty"
   },
   "CONNECTION": "Poor Network Connection !",
@@ -153,5 +182,8 @@
     "UPLOAD_SUCCESS": "Added Penalty Record Successfully!",
     "UPLOAD_ERROR": "Something Wrong! Try Again.",
     "NO_DATA": "No Pending Penalties!"
+  },
+  "DRIVER_DETAILS": {
+    "TITLE": "Penalty History"
   }
 }

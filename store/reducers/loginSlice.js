@@ -44,6 +44,11 @@ export const authSlice = createSlice({
         id: "",
       };
     },
+    loginDriver: (state, action) => {
+      SecureStore.setItemAsync("auth", JSON.stringify(action?.payload));
+      state.status = "idle";
+      state.user = action?.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -84,6 +89,6 @@ export const authSlice = createSlice({
 });
 
 export const selectAuth = (state) => state.auth;
-export const { logout } = authSlice.actions;
+export const { logout, loginDriver } = authSlice.actions;
 
 export default authSlice.reducer;

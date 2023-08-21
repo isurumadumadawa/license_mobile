@@ -3,6 +3,7 @@ import axios from "axios";
 import envVariables from "../utils/config.json";
 
 export const addPenalty = ({ token, data }) => {
+  console.log("pen daata......", token, data);
   return axios({
     method: "POST",
     url: `${envVariables.REACT_APP_API_BASE_URL}/panelty`,

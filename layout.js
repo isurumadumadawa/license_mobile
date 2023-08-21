@@ -11,7 +11,7 @@ import {
 import { getPendingPenaltyFromStorage } from "./store/reducers/penaltySlice";
 
 import UnAuthPoliceOfficer from "./navigations/unauth/policeOfficer";
-import AuthPoliceOfficer from "./navigations/auth/policeOfficer";
+import Auth from "./navigations/auth/index";
 import { Center, Spinner, View } from "native-base";
 
 import i18n from "./localization";
@@ -93,7 +93,7 @@ function layout() {
               </Badge>
             </Box>
           ) : null}
-          <AuthPoliceOfficer />
+          <Auth />
         </>
       );
     } else {

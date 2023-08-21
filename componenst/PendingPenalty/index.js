@@ -10,11 +10,12 @@ import {
   Input,
   Badge,
   useToast,
+  AlertDialog,
   Spinner,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 import Moment from "moment";
 
 import {
@@ -27,6 +28,7 @@ import { selectRules } from "../../store/reducers/ruleSlice";
 import { selectConnection } from "../../store/reducers/connectionSlice";
 
 import { addPenalty } from "../../services/penaltyAPI";
+import { getRecomendationService } from "../../services/recommendationAPI";
 import i18n from "../../localization";
 
 import VehicleData from "../../Data/vehicle.json";
@@ -39,9 +41,15 @@ function PendingPanelty() {
   const connection = useSelector(selectConnection);
 
   const [isLoading, setLoading] = useState(false);
+  const [recommendRules, setRecommendRules] = useState([]);
+  const [isRecOpen, setIsRecOpen] = React.useState(false);
 
   const dispatch = useDispatch();
   const toast = useToast();
+
+  const cancelRecRef = React.useRef(null);
+
+  const onRecClose = () => setIsRecOpen(false);
 
   useEffect(() => {
     console.log("penaties.........", penaties);
@@ -99,8 +107,9 @@ function PendingPanelty() {
         ...penalty,
         issuedDate: Moment(penalty?.issuedDate, "DD MMM YYYY").toDate(),
         expireDate: Moment(penalty?.expireDate, "DD MMM YYYY").toDate(),
+        rules: recommendRules,
       };
-      console.log("payload.....", payload);
+      onRecClose();
       try {
         if (connection) {
           setLoading(true);
@@ -126,6 +135,100 @@ function PendingPanelty() {
         });
         setLoading(false);
       }
+    };
+
+    const onGetRecommendation = async () => {
+      const tempRules = [];
+      rules?.map((r) => tempRules?.push(r?.ruleId));
+      try {
+        if (connection) {
+          setLoading(true);
+          const response = await getRecomendationService({
+            token: auth?.user?.token,
+            rules: tempRules,
+          });
+          setRecommendRules(response?.data);
+          setLoading(false);
+          setIsRecOpen(true);
+        } else {
+          setLoading(false);
+          toast.show({
+            description: i18n.t("PENDING_PENALTY.UPLOAD_ERROR"),
+          });
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.show({
+          description: i18n.t("PENDING_PENALTY.UPLOAD_ERROR"),
+        });
+      }
+    };
+
+    const RecDialog = () => {
+      return (
+        <AlertDialog
+          leastDestructiveRef={cancelRecRef}
+          isOpen={isRecOpen}
+          onClose={onRecClose}
+        >
+          <AlertDialog.Content>
+            <AlertDialog.CloseButton />
+            <AlertDialog.Header>
+              {i18n.t("ADD_PENALTY.RECOMMENDATION.SUCCESS.HEADER")}
+            </AlertDialog.Header>
+            <AlertDialog.Body>
+              {recommendRules?.map((r, i) => {
+                return (
+                  <Box key={i} mt={3}>
+                    <FormControl>
+                      <FormControl.Label
+                        _text={{
+                          bold: true,
+                        }}
+                      >
+                        {/* {i18n.t("ADD_PENALTY.VEHICLE_NUMBER.LABEL")} */}
+                        {getRule({ id: r?.ruleId })}
+                      </FormControl.Label>
+                      <TextInput
+                        // placeholder={i18n.t("ADD_PENALTY.VEHICLE_NUMBER.PLACEHOLDER")}
+                        onChangeText={(value) => {
+                          const updatedData = recommendRules.map(
+                            (item, index) =>
+                              i === index
+                                ? { ...item, panelty: JSON.parse(value) }
+                                : item
+                          );
+                          setRecommendRules(updatedData);
+                        }}
+                        value={JSON.stringify(r?.panelty)}
+                        keyboardType="number-pad"
+                        style={{
+                          height: 40,
+                          margin: 12,
+                          borderWidth: 1,
+                          padding: 10,
+                        }}
+                      />
+                    </FormControl>
+                  </Box>
+                );
+              })}
+            </AlertDialog.Body>
+            <AlertDialog.Footer>
+              <Button.Group space={2}>
+                <Button
+                  variant="solid"
+                  colorScheme="coolGray"
+                  onPress={onSubmit}
+                  ref={cancelRecRef}
+                >
+                  {i18n.t("ADD_PENALTY.RECOMMENDATION.SUCCESS.SUBMIT")}
+                </Button>
+              </Button.Group>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog>
+      );
     };
 
     return (
@@ -278,13 +381,14 @@ function PendingPanelty() {
             </Box>
             <Box w="10%"></Box>
             <Box w="60%">
-              <Button onPress={onSubmit}>
+              <Button onPress={onGetRecommendation}>
                 {i18n.t("PENDING_PENALTY.UPLOAD_BUTTON")}
               </Button>
             </Box>
           </HStack>
         </VStack>
         {/* <Button onPress={() => onRemovePenalty()}>Remove</Button> */}
+        <RecDialog />
       </Box>
     );
   };

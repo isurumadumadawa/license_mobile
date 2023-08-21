@@ -2,6 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import PoliceOfficerLogin from "../../screens/policeOfficerLogin";
+import DriverLogin from "../../screens/driverLogin";
 import Login from "../../screens/login";
 
 import i18n from "../../localization";
@@ -15,6 +16,17 @@ function PoliceOfficer() {
         component={Login}
         options={{
           title: i18n.t("LOGIN.TITLE"),
+          headerStyle: {
+            backgroundColor: "#0891b2",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
+      <Stack.Screen
+        name="driverLogin"
+        component={DriverLogin}
+        options={{
+          title: i18n.t("DRIVER_LOGIN.TITLE"),
           headerStyle: {
             backgroundColor: "#0891b2",
           },

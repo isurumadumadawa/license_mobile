@@ -10,3 +10,11 @@ export const loginService = ({ userName, password }) => {
     data: { userName, password },
   });
 };
+
+export const driverLoginService = ({ mobileNumber }) => {
+  return axios({
+    method: "POST",
+    url: `${envVariables.REACT_APP_API_BASE_URL}/auth/driver-login`,
+    data: { mobileNumber },
+  });
+};

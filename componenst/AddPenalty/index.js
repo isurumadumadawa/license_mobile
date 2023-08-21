@@ -1,4 +1,4 @@
-import { Platform } from "react-native";
+import { Platform, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   VStack,
@@ -41,6 +41,7 @@ import { selectConnection } from "../../store/reducers/connectionSlice";
 import { AddPendingPenalty } from "../../store/reducers/penaltySlice";
 
 import { addPenalty } from "../../services/penaltyAPI";
+import { getRecomendationService } from "../../services/recommendationAPI";
 
 const initialValues = {
   vehicleId: "",
@@ -54,14 +55,18 @@ const initialValues = {
 
 const AddPenalty = () => {
   const [formData, setData] = useState(initialValues);
+  const [recommendRules, setRecommendRules] = useState([]);
   const [errors, setErrors] = useState({});
 
   const [dateExpirePicker, setDateExpirePicker] = useState(false);
   const [selectedRules, setSelectedRules] = useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isRecOpen, setIsRecOpen] = React.useState(false);
+
   const [isLoading, setLoading] = useState(false);
 
   const cancelRef = React.useRef(null);
+  const cancelRecRef = React.useRef(null);
 
   const rules = useSelector(selectRules);
   const policeAreas = useSelector(selectPoliceAreas);
@@ -73,6 +78,7 @@ const AddPenalty = () => {
   const toast = useToast();
 
   const onClose = () => setIsOpen(false);
+  const onRecClose = () => setIsRecOpen(false);
 
   useEffect(() => {
     if (rules?.rules?.length == 0 || policeAreas?.policeAreas?.length == 0) {
@@ -143,6 +149,42 @@ const AddPenalty = () => {
     return true;
   };
 
+  const getRule = ({ id }) => {
+    let rule = "";
+
+    rules?.rules?.map((r) => {
+      if (id == r?.id) rule = r?.name;
+    });
+    return rule;
+  };
+
+  const onGetRecommendation = async () => {
+    if (validate()) {
+      const tempRules = [];
+      formData?.rules?.map((r) => tempRules?.push(r?.ruleId));
+      try {
+        if (connection) {
+          setLoading(true);
+          setIsOpen(false);
+          const response = await getRecomendationService({
+            token: auth?.user?.token,
+            rules: tempRules,
+          });
+          setRecommendRules(response?.data);
+          setLoading(false);
+          setIsRecOpen(true);
+        } else {
+          setLoading(false);
+          setIsOpen(true);
+        }
+      } catch (error) {
+        console.log("errrrrr", error);
+        setLoading(false);
+        setIsOpen(true);
+      }
+    }
+  };
+
   const onSubmit = async () => {
     setErrors({});
     if (validate()) {
@@ -155,10 +197,12 @@ const AddPenalty = () => {
         issuedDate: formData?.issuedDate,
         expireDate: formData?.expireDate,
         isCourt: formData?.isCourt,
-        rules: formData?.rules,
+        rules: recommendRules,
       };
       try {
         if (connection) {
+          onRecClose();
+          setIsOpen(false);
           setLoading(true);
           const response = await addPenalty({
             token: auth?.user?.token,
@@ -166,17 +210,18 @@ const AddPenalty = () => {
           });
           setLoading(false);
           setSelectedRules([]);
+          setRecommendRules([]);
           setData(initialValues);
           toast.show({
             description: i18n.t("ADD_PENALTY.CREATE.SUCCESS"),
           });
         } else {
           setLoading(false);
-          setIsOpen(!isOpen);
+          setIsOpen(true);
         }
       } catch (error) {
         setLoading(false);
-        setIsOpen(!isOpen);
+        setIsOpen(true);
       }
     }
   };
@@ -206,6 +251,72 @@ const AddPenalty = () => {
     onClose();
   };
 
+  const RecDialog = () => {
+    return (
+      <AlertDialog
+        leastDestructiveRef={cancelRecRef}
+        isOpen={isRecOpen}
+        onClose={onRecClose}
+      >
+        <AlertDialog.Content>
+          <AlertDialog.CloseButton />
+          <AlertDialog.Header>
+            {i18n.t("ADD_PENALTY.RECOMMENDATION.SUCCESS.HEADER")}
+          </AlertDialog.Header>
+          <AlertDialog.Body>
+            {recommendRules?.map((r, i) => {
+              return (
+                <Box key={i} mt={3}>
+                  <FormControl>
+                    <FormControl.Label
+                      _text={{
+                        bold: true,
+                      }}
+                    >
+                      {/* {i18n.t("ADD_PENALTY.VEHICLE_NUMBER.LABEL")} */}
+                      {getRule({ id: r?.ruleId })}
+                    </FormControl.Label>
+                    <TextInput
+                      // placeholder={i18n.t("ADD_PENALTY.VEHICLE_NUMBER.PLACEHOLDER")}
+                      onChangeText={(value) => {
+                        const updatedData = recommendRules.map((item, index) =>
+                          i === index
+                            ? { ...item, panelty: JSON.parse(value) }
+                            : item
+                        );
+                        setRecommendRules(updatedData);
+                      }}
+                      value={JSON.stringify(r?.panelty)}
+                      keyboardType="number-pad"
+                      style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                      }}
+                    />
+                  </FormControl>
+                </Box>
+              );
+            })}
+          </AlertDialog.Body>
+          <AlertDialog.Footer>
+            <Button.Group space={2}>
+              <Button
+                variant="solid"
+                colorScheme="coolGray"
+                onPress={onSubmit}
+                ref={cancelRecRef}
+              >
+                {i18n.t("ADD_PENALTY.RECOMMENDATION.SUCCESS.SUBMIT")}
+              </Button>
+            </Button.Group>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog>
+    );
+  };
+
   const FaildDialog = () => {
     return (
       <AlertDialog
@@ -226,7 +337,7 @@ const AddPenalty = () => {
               <Button
                 variant="unstyled"
                 colorScheme="coolGray"
-                onPress={onSubmit}
+                onPress={onGetRecommendation}
                 ref={cancelRef}
               >
                 {i18n.t("ADD_PENALTY.CREATE.ERROR.RETRY")}
@@ -420,12 +531,13 @@ const AddPenalty = () => {
           {isLoading ? (
             <Spinner accessibilityLabel="Loading posts" mt="5" />
           ) : null}
-          <Button onPress={onSubmit} mt="5" colorScheme="cyan">
+          <Button onPress={onGetRecommendation} mt="5" colorScheme="cyan">
             {i18n.t("ADD_PENALTY.SUBMIT")}
           </Button>
         </VStack>
       </Center>
       <FaildDialog />
+      <RecDialog />
     </ScrollView>
   );
 };

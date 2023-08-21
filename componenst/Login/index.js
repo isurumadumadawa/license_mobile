@@ -45,10 +45,7 @@ const Login = () => {
         <Button onPress={() => navigation.navigate("policeOfficerLogin")}>
           {i18n.t("LOGIN.POLICE_BUTTON_TITLE")}
         </Button>
-        <Button
-          onPress={() => navigation.navigate("policeOfficerLogin")}
-          mt="5"
-        >
+        <Button onPress={() => navigation.navigate("driverLogin")} mt="5">
           {i18n.t("LOGIN.DRIVER_BUTTON_TITLE")}
         </Button>
       </Box>
